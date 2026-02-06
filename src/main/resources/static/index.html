@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin panel</title>
+    <link rel="icon" type="image/png" href="/src/main/resources/static/resources/images/valentine heart.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/src/main/resources/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="outermost-container p-5" id="outermost-left">
+        <form method="post" class="d-flex flex-column gap-3 p-5 bg-light px-5 rounded-3">
+            <div id="header" class="text-primary container text-center mb-3">
+                <h2>Add new people</h2>
+                <p>who you want to share something with!</p>
+            </div>
+            <div class="form-floating">
+                <input type="text" name="firstName" id="firstName" class="form-control" placeholder="Enter first name">
+                <label for="firstName" class=""> First name</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="text" name="lastName" id="lastName" class="form-control" placeholder="Enter last name">
+                <label for="lastName"> Last name</label>
+            </div>
+
+            <div class="form-floating">
+                <input type="number" name="age" id="age" class="form-control">
+                <label for="age">Age</label>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+                <button class="btn btn-outline-secondary">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                </button>
+                <button class="btn btn-success">Add new person</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="outermost-container" id="outermost-right">
+        
+    </div>
+</body>
+</html>
