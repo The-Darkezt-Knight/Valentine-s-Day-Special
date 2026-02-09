@@ -5,36 +5,43 @@
         body{
             width: 100%;
             min-height: 100vh;
+            box-sizing: border-box;
             height: 100vh;
             margin: 0;
-            padding: 0;
-            background: #434f78;
-            background: radial-gradient(circle, rgba(67, 79, 120, 1) 0%, rgba(63, 71, 107, 1) 16%, rgba(0, 0, 0, 1) 100%);
+            padding: 20px;
+            background-color: #f4f4f4;
             display: flex;
-            box-sizing: border-box;
-            gap: 20px;
             justify-content: space-between;
         }
 
-        .outermost-container{
-            width: 50%;
-            height: 100vh;
+        #navbar{
+            max-height: 100vh;
             box-sizing: border-box;
         }
 
-        .outermost-left{
+        .outermost-container{
+            max-height: 100vh;
+            flex: 1;
+            box-sizing: border-box;
+        }
+
+        #outermost-right{
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            justify-content: baseline;
             align-items: center;
         }
 
-        .outermost-right{
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        #navbar-body button{
+            height: 3rem;
         }
 
-        #outermost-left form #header{
-            line-height: 0.3;
+        #table{
+            flex: 1;
         }
+
+        #add-form{
+            display: flex;
+        }
+
 
