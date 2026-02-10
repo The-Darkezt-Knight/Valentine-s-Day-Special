@@ -5,7 +5,38 @@ document.addEventListener('DOMContentLoaded', ()=> {
         columns: [
             {data: 'firstName'},
             {data: 'lastName'},
-            {data: 'age'}
+            {data: 'age'},
+
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function (data, type, row) {
+                    return `
+                        <button
+                            class="btn btn-sm btn-warning update-btn"
+                            data-id="${row.id}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#update"
+                            >Update</button>
+                    `
+                }
+            },
+
+            {
+                data: null,
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return `
+                        <button
+                            class="btn btn-sm btn-danger delete-btn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#remove"
+                        >Remove</button>
+                    `
+                }
+            }
         ]
     });
 
@@ -26,6 +57,55 @@ document.addEventListener('DOMContentLoaded', ()=> {
 
     // Handle form submission
     const form = document.getElementById("add-person-form");
+    const updateForm = document.getElementById("update-person-form");
+    const updateInfo = document.getElementById("update-person-information");
+    const updateModalEl = document.getElementById("update");
+    const updateFirstName = document.getElementById("change-first-name");
+    const updateLastName = document.getElementById("change-last-name");
+    const updateAge = document.getElementById("change-age");
+
+    const removeConfirmBtn = document.getElementById("delete-btn");
+    const removeModalEl = document.getElementById("remove");
+    const removePersonName = document.getElementById("remove-person-name");
+    let selectedFirstName = null;
+
+    if (updateModalEl && updateInfo) {
+        updateModalEl.addEventListener('show.bs.modal', () => {
+            updateInfo.textContent = "";
+            updateInfo.classList.remove("text-success", "text-danger");
+        });
+    }
+
+    $('#user-table tbody').on('click', '.update-btn', function () {
+        const rowData = table.row($(this).closest('tr')).data();
+        if (!rowData) {
+            return;
+        }
+        if (updateFirstName) updateFirstName.value = rowData.firstName ?? "";
+        if (updateLastName) updateLastName.value = rowData.lastName ?? "";
+        if (updateAge) updateAge.value = rowData.age ?? "";
+    });
+
+    $('#user-table tbody').on('click', '.delete-btn', function () {
+        const rowData = table.row($(this).closest('tr')).data();
+        if (!rowData) {
+            return;
+        }
+        selectedFirstName = rowData.firstName ?? null;
+        if (removePersonName) {
+            removePersonName.textContent = selectedFirstName
+                ? `Remove ${selectedFirstName}?`
+                : "Remove this person?";
+        }
+    });
+
+    if (removeModalEl) {
+        removeModalEl.addEventListener('show.bs.modal', () => {
+            if (removePersonName && !removePersonName.textContent) {
+                removePersonName.textContent = "Remove this person?";
+            }
+        });
+    }
 
     form.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -56,4 +136,83 @@ document.addEventListener('DOMContentLoaded', ()=> {
             alert("Failed to add person: " + err.message);
         });
     });
+
+
+    //Form that updates information
+    updateForm.addEventListener('submit', (e)=> {
+        e.preventDefault();
+
+        const data = {
+            firstName : document.getElementById("change-first-name").value,
+            lastName : document.getElementById("change-last-name").value,
+            age : document.getElementById("change-age").value
+        }
+
+        fetch('/api/admin/list/update', {
+            method : "POST",
+            headers: {"Content-Type" : "application/json"},
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if(!res.ok){throw new Error(`Server error ${res.status}`)}
+            return res.text();
+        })
+        .then(message => {
+            console.log("success", message);
+            if (updateInfo) {
+                updateInfo.classList.remove("text-danger");
+                updateInfo.classList.add("text-success");
+                updateInfo.textContent = message;
+            }
+            updateForm.reset();
+            alert(message);
+            display();
+        })
+        .catch(
+            err => {
+                console.log(err);
+                if (updateInfo) {
+                    updateInfo.classList.remove("text-success");
+                    updateInfo.classList.add("text-danger");
+                    updateInfo.textContent = `Failed to update due to ${err.message}`;
+                }
+            }
+        )
+    })
+
+    //Removes people
+    if (removeConfirmBtn) {
+        removeConfirmBtn.addEventListener('click', () => {
+            if (!selectedFirstName) {
+                alert("No person selected to remove.");
+                return;
+            }
+
+            fetch('/api/admin/list/remove', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ firstName: selectedFirstName })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error ${res.status}`);
+                return res.text();
+            })
+            .then(message => {
+                alert(message);
+                selectedFirstName = null;
+                if (removePersonName) removePersonName.textContent = "";
+                const modalInstance = bootstrap.Modal.getInstance(removeModalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+                display();
+            })
+            .catch(err => {
+                console.error(err);
+                alert(`Failed to remove due to ${err.message}`);
+            });
+        });
+    }
+
+    
 })
