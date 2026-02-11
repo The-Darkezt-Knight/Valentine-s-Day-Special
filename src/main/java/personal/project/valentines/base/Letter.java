@@ -1,22 +1,27 @@
 package personal.project.valentines.base;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Table(name = "letters")
+@Setter
+@Getter
 public class Letter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    Long letter_id;
 
     @Column(columnDefinition = "TEXT")
     String text;
 
     @ManyToOne
+    @JoinColumn(name = "id", nullable = false)
     Person recipient;
 
     LocalDateTime createdAt;
