@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', ()=> {
             {data: 'firstName'},
             {data: 'lastName'},
             {data: 'age'},
+            {data: 'category'},
 
             {
                 data: null,
@@ -107,13 +108,36 @@ document.addEventListener('DOMContentLoaded', ()=> {
         });
     }
 
+    // Show/hide secret question fields based on category selection
+    const categorySelect = document.getElementById("category");
+    const secretFields = document.getElementById("secret-fields");
+
+    if (categorySelect && secretFields) {
+        categorySelect.addEventListener('change', () => {
+            const val = categorySelect.value;
+            if (val === 'PARENTS' || val === 'SPECIAL_SOMEONE') {
+                secretFields.style.display = '';
+                secretFields.classList.add('d-flex');
+            } else {
+                secretFields.style.display = 'none';
+                secretFields.classList.remove('d-flex');
+                document.getElementById('secretQuestion').value = '';
+                document.getElementById('secretAnswer').value = '';
+            }
+        });
+    }
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
+        const ageVal = document.getElementById("age").value;
         const data = {
-            'firstName' : document.getElementById("firstName").value,
-            'lastName' : document.getElementById("lastName").value,
-            'age' : document.getElementById("age").value
+            'firstName'      : document.getElementById("firstName").value,
+            'lastName'       : document.getElementById("lastName").value,
+            'age'            : ageVal ? parseInt(ageVal, 10) : null,
+            'category'       : document.getElementById("category").value,
+            'secretQuestion' : document.getElementById("secretQuestion").value || null,
+            'secretAnswer'   : document.getElementById("secretAnswer").value || null
         }
 
         fetch("/api/admin/list/register", {

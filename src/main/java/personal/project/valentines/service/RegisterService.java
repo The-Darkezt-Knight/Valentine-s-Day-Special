@@ -52,12 +52,24 @@ public class RegisterService {
 
     @Transactional
     public String registerUser(RegisterRequest request) {
-        if(request == null) {
-            throw new NullPointerException("Request object not found");
-        }
+        Objects.requireNonNull(request, "Request object must not be null");
+        Objects.requireNonNull(request.category(), "Category must not be null");
 
         if(request.firstName().isBlank() || request.lastName().isBlank()) {
             throw new IllegalArgumentException("Either first name or last name is missing");
+        }
+
+        // Fail-fast: PARENTS and SPECIAL_SOMEONE require a secret question and answer
+        if (request.category() == Person.Category.PARENTS
+                || request.category() == Person.Category.SPECIAL_SOMEONE) {
+            if (request.secretQuestion() == null || request.secretQuestion().isBlank()) {
+                throw new IllegalArgumentException(
+                        "Secret question is required for " + request.category());
+            }
+            if (request.secretAnswer() == null || request.secretAnswer().isBlank()) {
+                throw new IllegalArgumentException(
+                        "Secret answer is required for " + request.category());
+            }
         }
 
         if(isPersonExisting(request)) {
@@ -67,9 +79,18 @@ public class RegisterService {
         Person newPerson = new Person();
         newPerson.setFirstName(request.firstName().trim());
         newPerson.setLastName(request.lastName().trim());
+        newPerson.setCategory(request.category());
 
         if(request.age() != null) {
             newPerson.setAge(request.age());
+        }
+
+        if (request.secretQuestion() != null && !request.secretQuestion().isBlank()) {
+            newPerson.setSecretQuestion(request.secretQuestion().trim());
+        }
+
+        if (request.secretAnswer() != null && !request.secretAnswer().isBlank()) {
+            newPerson.setSecretAnswer(request.secretAnswer().trim().toLowerCase());
         }
 
         userRepository.save(newPerson);
@@ -85,7 +106,8 @@ public class RegisterService {
                 .map(user -> new ListResponse(
                         user.getFirstName(),
                         user.getLastName(),
-                        user.getAge()
+                        user.getAge(),
+                        user.getCategory()
                 )).toList();
     }
 

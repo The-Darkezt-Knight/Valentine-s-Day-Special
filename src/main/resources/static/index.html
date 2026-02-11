@@ -66,6 +66,7 @@
                         <th>First name</th>
                         <th>last name</th>
                         <th>Age</th>
+                        <th>Category</th>
                         <th>Action</th>
                         <th>Action</th>
                     </tr>
@@ -103,6 +104,28 @@
                             <div class="form-floating">
                                 <input type="number" name="age" id="age" class="form-control" placeholder="Enter age">
                                 <label for="age">Age</label>
+                            </div>
+
+                            <div class="form-floating">
+                                <select name="category" id="category" class="form-select" required>
+                                    <option value="" disabled selected></option>
+                                    <option value="PARENTS">Parents</option>
+                                    <option value="SPECIAL_SOMEONE">Special Someone</option>
+                                    <option value="PEERS">Peers</option>
+                                </select>
+                                <label for="category">Category</label>
+                            </div>
+
+                            <div id="secret-fields" class="d-flex flex-column gap-3" style="display: none !important;">
+                                <div class="form-floating">
+                                    <input type="text" name="secretQuestion" id="secretQuestion" class="form-control" placeholder="Enter secret question">
+                                    <label for="secretQuestion">Secret Question</label>
+                                </div>
+
+                                <div class="form-floating">
+                                    <input type="text" name="secretAnswer" id="secretAnswer" class="form-control" placeholder="Enter secret answer">
+                                    <label for="secretAnswer">Secret Answer</label>
+                                </div>
                             </div>
                         </form>
                     </div>
