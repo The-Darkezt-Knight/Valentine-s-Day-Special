@@ -67,7 +67,6 @@ public class LetterService {
      * @param category
      * @return
      *
-     * Changed the return value from List<Letter> to List<DisplayLetterResponse>
      */
     public List<DisplayLetterResponse> displayLettersByCategory(DisplayLetterRequest request) {
         if(request == null) {

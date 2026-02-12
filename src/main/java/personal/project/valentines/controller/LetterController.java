@@ -1,16 +1,19 @@
 package personal.project.valentines.controller;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.*;
-import personal.project.valentines.base.Letter;
-import personal.project.valentines.base.Person;
 import personal.project.valentines.dto.DedicateLetterRequest;
 import personal.project.valentines.dto.DisplayLetterRequest;
 import personal.project.valentines.dto.DisplayLetterResponse;
 import personal.project.valentines.service.LetterService;
-
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("api/admin")
