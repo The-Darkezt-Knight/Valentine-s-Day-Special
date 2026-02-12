@@ -1,59 +1,67 @@
-    $(document).ready(function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-        // Map modal IDs to backend enum values
-        const modalCategoryMap = {
-            "parent": "PARENTS",
-            "specialsomeone": "SPECIAL_SOMEONE"
-        };
+    // Map modal IDs to backend enum values
+    const modalCategoryMap = {
+        parent: "PARENTS",
+        specialsomeone: "SPECIAL_SOMEONE"
+    };
 
-        // Store fetched Q&A per modal so we can validate later
-        let activeAuth = {
-            question: null,
-            answer: null,
-            modalId: null
-        };
+    // Store fetched Q&A per modal
+    let activeAuth = {
+        question: null,
+        answer: null,
+        modalId: null
+    };
 
-        // ── Step 1: When a modal opens, send the category to the backend ──
-        $(".modal").on("show.bs.modal", function () {
-            const modalId = $(this).attr("id");
+
+    // ── Step 1: When a modal opens ──
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("show.bs.modal", () => {
+
+            const modalId = modal.id;
             const category = modalCategoryMap[modalId];
+            localStorage.setItem("category", modalCategoryMap[modalId]);
 
             if (!category) return;
 
             activeAuth.modalId = modalId;
 
-            $.ajax({
-                url: "/api/admin/authenticate/send",
+            fetch("/api/admin/authenticate/send", {
                 method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({ category: category }),
-                success: function (data) {
-                    if (!data || data.length === 0) {
-                        alert("No authentication questions found for this category.");
-                        return;
-                    }
-
-                    // Pick the first question from the list
-                    const qa = data[0];
-                    activeAuth.question = qa.question;
-                    activeAuth.answer = qa.answer;
-
-                    // Display the question in the modal's label
-                    const modal = $("#" + modalId);
-                    modal.find(".form-floating label").text(qa.question);
-                    modal.find("input[name='answer']").val("");
-                },
-                error: function (xhr) {
-                    console.error("Failed to fetch authentication question:", xhr.responseText);
-                    alert("Something went wrong while fetching the question.");
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ category })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Request failed");
+                return res.json();
+            })
+            .then(data => {
+                if (!data || data.length === 0) {
+                    alert("No authentication questions found for this category.");
+                    return;
                 }
+
+                const qa = data[0];
+                activeAuth.question = qa.question;
+                activeAuth.answer = qa.answer;
+
+                modal.querySelector(".form-floating label").textContent = qa.question;
+                modal.querySelector("input[name='answer']").value = "";
+            })
+            .catch(err => {
+                console.error("Failed to fetch authentication question:", err);
+                alert("Something went wrong while fetching the question.");
             });
         });
+    });
 
-        // ── Step 2: When "Read my letters" is clicked, validate the answer ──
-        $(".modal .btn-primary").on("click", function () {
-            const modal = $(this).closest(".modal");
-            const userAnswer = modal.find("input[name='answer']").val().trim();
+    // ── Step 2: Validate answer when primary button is clicked ──
+    document.querySelectorAll(".modal .btn-primary").forEach(button => {
+        button.addEventListener("click", () => {
+
+            const modal = button.closest(".modal");
+            const input = modal.querySelector("input[name='answer']");
+            const userAnswer = input.value.trim();
 
             if (!userAnswer) {
                 alert("Please enter your answer.");
@@ -65,37 +73,44 @@
                 return;
             }
 
-            $.ajax({
-                url: "/api/admin/authenticate/validate",
+            fetch("/api/admin/authenticate/validate", {
                 method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
                     question: activeAuth.question,
                     answer: userAnswer
-                }),
-                success: function () {
-                    // Validation passed – redirect to the main panel
-                    window.location.href = "/view/main-panel.html";
-                },
-                error: function (xhr) {
-                    console.error("Validation failed:", xhr.responseText);
-                    alert("Incorrect answer. Try again!");
-                }
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error("Validation failed");
+                window.location.href = "/view/main-panel.html";
+            })
+            .catch(err => {
+                console.error("Validation failed:", err);
+                alert("Incorrect answer. Try again!");
             });
         });
+    });
 
-        // ── Cancel button dismisses the modal ──
-        $(".modal .btn-secondary").on("click", function () {
-            const modal = $(this).closest(".modal");
-            bootstrap.Modal.getInstance(modal[0])?.hide();
+    // ── Cancel button closes modal ──
+    document.querySelectorAll(".modal .btn-secondary").forEach(button => {
+        button.addEventListener("click", () => {
+            const modal = button.closest(".modal");
+            const instance = bootstrap.Modal.getInstance(modal);
+            instance?.hide();
         });
+    });
 
-        // ── Reset state when a modal is closed ──
-        $(".modal").on("hidden.bs.modal", function () {
+    // ── Reset state when modal closes ──
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("hidden.bs.modal", () => {
+
             activeAuth.question = null;
             activeAuth.answer = null;
             activeAuth.modalId = null;
-            $(this).find("input[name='answer']").val("");
-            $(this).find(".form-floating label").text("Question");
+
+            modal.querySelector("input[name='answer']").value = "";
+            modal.querySelector(".form-floating label").textContent = "Question";
         });
     });
+});

@@ -1,22 +1,27 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", ()=> {
 
-    const paper = document.getElementById("paper");
+    const category = localStorage.getItem("category")
+
+    const container = document.getElementById("container");
 
     fetch("/api/admin/letter/display", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            category:category
+        })
     })
     .then(res => res.json())
     .then(data => {
         paper.innerHTML = "";
 
         data.forEach(item => {
-            const container = document.createElement("div");
-            container.classList.add("letter");
-            container.textContent = item;
-            paper.appendChild(container);
+            const paper = document.createElement("div");
+            paper.classList.add("letter");
+            paper.textContent = item.text;
+            paper.classList.add("paper");
+            container.appendChild(paper);
         });
     })
-    .catch(err => console.error(err));
-
-});
+    .catch(err => console.log(err));
+})
