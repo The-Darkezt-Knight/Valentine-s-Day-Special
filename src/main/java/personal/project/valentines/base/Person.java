@@ -10,8 +10,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -71,7 +69,7 @@ public class Person {
     }
 
     public Person(String firstName, String lastName, int age, Category category,
-                  String secretQuestion, String secretAnswer) {
+        String secretQuestion, String secretAnswer) {
         this.firstName = Objects.requireNonNull(firstName, "firstName must not be null");
         this.lastName = Objects.requireNonNull(lastName, "lastName must not be null");
         this.category = Objects.requireNonNull(category, "category must not be null");

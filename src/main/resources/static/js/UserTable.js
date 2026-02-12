@@ -204,6 +204,66 @@ document.addEventListener('DOMContentLoaded', ()=> {
         )
     })
 
+    // ── Dedicate letter modal ──
+    const dedicateForm = document.getElementById('dedicate-letter-form');
+    const dedicateRecipient = document.getElementById('dedicate-recipient');
+    const dedicateModalEl = document.getElementById('dedicate');
+
+    // Populate recipient dropdown with unique first names from the table
+    function populateRecipientDropdown() {
+        const data = table.rows().data().toArray();
+        const firstNames = [...new Set(data.map(row => row.firstName).filter(Boolean))].sort();
+
+        // Keep only the default disabled option
+        dedicateRecipient.innerHTML = '<option value="" disabled selected></option>';
+
+        firstNames.forEach(name => {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            dedicateRecipient.appendChild(option);
+        });
+    }
+
+    // Refresh the dropdown every time the modal opens
+    if (dedicateModalEl) {
+        dedicateModalEl.addEventListener('show.bs.modal', () => {
+            populateRecipientDropdown();
+        });
+    }
+
+    // Handle dedication form submission
+    if (dedicateForm) {
+        dedicateForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const payload = {
+                firstName: dedicateRecipient.value,
+                text: document.getElementById('dedicate-text').value
+            };
+
+            fetch('/api/admin/letter/dedicate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => {
+                if (!res.ok) throw new Error(`Server error: ${res.status}`);
+                return res.text();
+            })
+            .then(message => {
+                alert(message);
+                dedicateForm.reset();
+                const modalInstance = bootstrap.Modal.getInstance(dedicateModalEl);
+                if (modalInstance) modalInstance.hide();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Failed to dedicate letter: ' + err.message);
+            });
+        });
+    }
+
     //Removes people
     if (removeConfirmBtn) {
         removeConfirmBtn.addEventListener('click', () => {

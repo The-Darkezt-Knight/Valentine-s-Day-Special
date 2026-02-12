@@ -1,7 +1,11 @@
 package personal.project.valentines.service;
 
+import java.util.List;
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import personal.project.valentines.base.Letter;
 import personal.project.valentines.base.Person;
 import personal.project.valentines.dto.DisplayLetterRequest;
@@ -9,9 +13,6 @@ import personal.project.valentines.dto.DisplayLetterResponse;
 import personal.project.valentines.exception.ItemIsNullException;
 import personal.project.valentines.repository.LetterRepository;
 import personal.project.valentines.repository.UserRepository;
-
-import java.util.List;
-import java.util.Objects;
 
 @Service
 public class LetterService {

@@ -67,6 +67,4 @@ The `index.html` (or a new guest landing page) will present three primary entry 
 * MySQL Transition: Ensure the `secretAnswer` column is properly indexed for performance.
 * Encryption: Implement hashing for the `secretAnswer` to ensure that even if the database is compromised, the answers remain secure.
 
-To help Copilot or any AI assistant refactor your existing code to match the new requirements, you can use the following prompt. It focuses strictly on the files you have already created—`Person.java`, `RegisterService.java`, `UserController.java`, and your DTOs—without adding new features like the Letter system yet.
-
 ---
