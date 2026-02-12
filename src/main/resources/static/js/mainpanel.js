@@ -1,27 +1,33 @@
-document.addEventListener("DOMContentLoaded", ()=> {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const category = localStorage.getItem("category")
+    const category = localStorage.getItem("category");
+
+    if (!category) {
+        console.error("No category found in localStorage. Redirecting...");
+        window.location.href = "/view/onboarding-page.html";
+        return;
+    }
 
     const container = document.getElementById("container");
 
     fetch("/api/admin/letter/display", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            category:category
-        })
+        body: JSON.stringify({ category: category })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch letters");
+        return res.json();
+    })
     .then(data => {
-        paper.innerHTML = "";
+        container.innerHTML = "";
 
         data.forEach(item => {
             const paper = document.createElement("div");
-            paper.classList.add("letter");
+            paper.classList.add("letter", "paper");
             paper.textContent = item.text;
-            paper.classList.add("paper");
             container.appendChild(paper);
         });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error("Error loading letters:", err));
 })
