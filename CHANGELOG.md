@@ -3,7 +3,12 @@
 All notable changes to the **Valentine's Day Special** project are documented in this file.
 
 ---
+## [v1.2.1] — 2026-02-13
 
+### Data Persistence (`application.properties`)
+- **REVERTED** H2 database from file-based (`jdbc:h2:file:./data/valentine_db`) back to **in-memory** (`jdbc:h2:mem:valentine_db`).
+
+---
 ## [v1.1.0] — 2026-02-13
 
 ### Security & Access Control

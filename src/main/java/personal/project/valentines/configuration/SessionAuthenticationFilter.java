@@ -31,6 +31,13 @@ public class SessionAuthenticationFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         if (PROTECTED_PATH.equals(path)) {
+            // Allow peers to bypass authentication
+            String category = request.getParameter("category");
+            if ("PEERS".equals(category)) {
+                filterChain.doFilter(request, response);
+                return;
+            }
+
             HttpSession session = request.getSession(false);
 
             boolean isAuthenticated = session != null

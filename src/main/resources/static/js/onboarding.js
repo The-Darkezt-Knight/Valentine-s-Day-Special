@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modalId: null
     };
 
-
     // ── Step 1: When a modal opens ──
     document.querySelectorAll(".modal").forEach(modal => {
         modal.addEventListener("show.bs.modal", () => {
@@ -113,4 +112,10 @@ document.addEventListener("DOMContentLoaded", () => {
             modal.querySelector(".form-floating label").textContent = "Question";
         });
     });
+
+    //allows for the redirection of peers-belonged visitors to the main panel without authentication
+    document.getElementById("peer-btn").addEventListener("click", () => {
+        localStorage.setItem("category", "PEERS");
+        window.location.href = "/view/main-panel.html?category=PEERS";
+    })
 });
