@@ -3,11 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="/src/main/resources/static/resources/images/valentine heart.png">
-    <link rel="stylesheet" href="/src/main/resources/static/css/global.css">
+    <link rel="icon" type="image/png" href="/resources/images/valentine heart.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/message-panel.css">
+    <link rel="stylesheet" href="/css/global.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="/resources/panel/message-panel.html"></script>
     <title>Message panel</title>
 </head>
 <body>
-    
+    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#chat-panel">Open chat</button>
+    <div id="chat-panel" class="offcanvas offcanvas-end ">
+        <div class="offcanvas-header d-flex flex-column">
+            <h2 class="offcanvas-title text-primary">Leave a message</h2>
+            <p class="text-mute">for everyone to see</p>
+        </div>
+        <div id="panel-body" class="offcanvas-body d-flex justify-content-start flex-column border">
+            <!--Messages are placed here-->
+        </div>
+        <div class="offcanvas-footer d-flex p-1 gap-1">
+            <div class="form-floating flex-grow-1">
+                <input type="text" name="message-input" id="message-input" class="form-control" placeholder="remember to be kind">
+                <label for="message-input">remember to be kind</label>
+            </div>
+            <div class="d-grid">
+                <button id="send-btn" class="btn btn-block btn-primary">send</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

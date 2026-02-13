@@ -114,8 +114,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     //allows for the redirection of peers-belonged visitors to the main panel without authentication
-    document.getElementById("peer-btn").addEventListener("click", () => {
-        localStorage.setItem("category", "PEERS");
-        window.location.href = "/view/main-panel.html?category=PEERS";
-    })
+    const peerBtn = document.getElementById("peer-btn");
+    if (peerBtn) {
+        peerBtn.addEventListener("click", () => {
+            localStorage.setItem("category", "PEERS");
+            window.location.href = "/view/main-panel.html?category=PEERS";
+        })
+    }
 });
