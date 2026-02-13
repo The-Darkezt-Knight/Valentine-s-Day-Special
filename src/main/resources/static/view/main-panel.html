@@ -10,14 +10,47 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="/css/global.css">
     <link rel="stylesheet" href="/css/mainpanel.css">
+    <link rel="stylesheet" href="/css/message-panel.css">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="/js/mainpanel.js"></script>
+    <script src="/js/message.js"></script>
 </head>
 <body>
-    <div id="container" class="container p-5 d-flex flex-column gap-3">
+    <!-- Navbar with chat toggle button -->
+    <nav class="navbar navbar-dark fixed-top px-3">
+        <span class="navbar-brand mb-0 h1"></span>
+        <button class="btn btn-outline-light" type="button" data-bs-toggle="offcanvas" data-bs-target="#chat-panel" aria-controls="chat-panel">
+            <i class="fa-solid fa-comment-dots"></i>
+        </button>
+    </nav>
+
+    <!-- Main content -->
+    <div id="container" class="container p-5 mt-5 d-flex flex-column gap-3">
         <div id="paper" class="container p-5rounded shadow">
+        </div>
+    </div>
+
+    <!-- Chat offcanvas (right side) -->
+    <div id="chat-panel" class="offcanvas offcanvas-end">
+        <div class="offcanvas-header d-flex flex-column">
+            <h2 class="offcanvas-title text-primary">Leave a message</h2>
+            <p class="text-muted">for everyone to see</p>
+        </div>
+        <div id="panel-body" class="offcanvas-body d-flex justify-content-start flex-column border">
+            <!--Messages are placed here-->
+        </div>
+        <div class="offcanvas-footer d-flex p-1 gap-1">
+            <div class="form-floating flex-grow-1">
+                <input type="text" name="message-input" id="message-input" class="form-control" placeholder="remember to be kind">
+                <label for="message-input">remember to be kind</label>
+            </div>
+            <div class="d-grid">
+                <button id="send-btn" class="btn btn-block btn-primary">send</button>
+            </div>
         </div>
     </div>
 </body>
