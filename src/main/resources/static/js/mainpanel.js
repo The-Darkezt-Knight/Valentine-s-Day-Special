@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         data.forEach(item => {
             const paper = document.createElement("div");
-            paper.classList.add("letter", "paper");
+            paper.classList.add("paper");
             paper.textContent = item.text;
             container.appendChild(paper);
         });
