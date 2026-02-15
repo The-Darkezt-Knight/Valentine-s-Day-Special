@@ -1,0 +1,157 @@
+body{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    min-height: 100vh;
+    height: auto;
+    padding: 30px;
+}
+
+#introduction{
+    line-height: 1.2;
+    text-align: center;
+    color: antiquewhite;
+    min-height: auto;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+}
+
+#introduction h1{
+    font-size: clamp(1.8rem, 5vw, 60px);
+    font-weight: 1000;
+}
+
+#introduction p{
+    font-size: clamp(1rem, 2.5vw, 30px);
+    font-weight: 500;
+}
+
+.card{
+    flex-grow: 1;
+    min-height: 400px;
+    height: 500px;
+    position: relative;
+}
+
+.badge{
+    position: absolute;
+    left: -10px;
+    top: -15px;
+    width: 100px;
+    min-width: 100px;
+}
+
+.card-header{
+    height: auto;
+    min-height: 100px;
+    height: 150px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FC438D;
+    color: #fff7fa;
+}
+
+.card-header h2{
+    font-size: clamp(1.4rem, 3vw, 40px);
+    font-weight: 700;
+    color: white;
+    margin: 0;
+}
+
+.card-body .btn {
+    color: #d94680;
+    border: 1px solid #d94680;
+}
+
+.card-body .btn:hover{
+    background-color: #d94680;
+    color: #fff;
+}
+
+.card-footer {
+    background-color: #fff4f7;
+}
+
+.card-footer strong{
+    color: #6b3a4b;
+    font-size: clamp(0.85rem, 1.5vw, 1rem);
+}
+
+/* ===== Responsive Breakpoints ===== */
+
+/* Tablets and small laptops */
+@media (max-width: 992px) {
+    body {
+        padding: 20px;
+    }
+
+    .card {
+        min-height: 350px;
+    }
+
+    .card-header {
+        min-height: 80px;
+    }
+}
+
+/* Small tablets and large phones */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        align-items: center;
+    }
+
+    #introduction {
+        padding: 15px 10px;
+        min-height: auto;
+    }
+
+    .card {
+        min-height: 300px;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .card-header {
+        min-height: 70px;
+        padding: 15px;
+    }
+
+    .card-body button {
+        font-size: 0.95rem;
+    }
+}
+
+/* Phones */
+@media (max-width: 576px) {
+    body {
+        padding: 10px;
+    }
+
+    #introduction {
+        padding: 10px 5px;
+    }
+
+    .card {
+        min-height: 250px;
+        max-width: 100%;
+    }
+
+    .card-header {
+        min-height: 60px;
+        padding: 10px;
+    }
+
+    .card-body button {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    .badge {
+        width: 80px;
+        min-width: 80px;
+        font-size: 0.7rem;
+    }
+}

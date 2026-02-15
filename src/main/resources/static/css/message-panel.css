@@ -1,6 +1,18 @@
 .offcanvas-body{
+    max-width: 400px;
     box-sizing: border-box;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
+}
+
+.alert{
+    word-wrap: break-word;
+    max-width: 350px;
+    width: fit-content;
+}
+
+.alert p{
+    margin: 0;
+    padding: 0;
 }
